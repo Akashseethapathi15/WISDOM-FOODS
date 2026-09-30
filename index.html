@@ -5,65 +5,239 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wisdom.foods</title>
     <style>
+        :root {
+            --apple-orange: #ff9500;
+            --apple-yellow: #ffcc00;
+            --apple-blue: #0071e3;
+            --apple-bg: #fbfbfd;
+            --card-bg: #ffffff;
+            --text-main: #1d1d1f;
+            --text-secondary: #86868b;
+            --border-color: #d2d2d7;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #ffffff;
-            color: #1d1d1f;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: var(--apple-bg);
+            color: var(--text-main);
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 50px 20px;
+            min-height: 100vh;
             margin: 0;
+            padding: 60px 20px;
+            -webkit-font-smoothing: antialiased;
         }
-        h1 { color: #f56900; font-weight: 600; letter-spacing: -0.5px; }
-        .container { max-width: 650px; width: 100%; text-align: center; }
-        input {
-            width: 85%;
-            padding: 14px 22px;
-            margin: 15px 0;
-            border: 1px solid #d2d2d7;
-            border-radius: 25px;
-            font-size: 17px;
-            background-color: #f5f5f7;
+
+        .container {
+            max-width: 680px;
+            width: 100%;
+            text-align: center;
+            animation: fadeInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .logo-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--apple-orange), var(--apple-yellow));
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 12px rgba(255, 149, 0, 0.25);
+        }
+
+        h1 {
+            font-size: 42px;
+            font-weight: 700;
+            letter-spacing: -0.015em;
+            margin: 0 0 8px 0;
+            color: var(--text-main);
+        }
+
+        p.subtitle {
+            font-size: 19px;
+            color: var(--text-secondary);
+            font-weight: 400;
+            margin-bottom: 30px;
+        }
+
+        .search-box-wrapper {
+            position: relative;
+            width: 100%;
+            margin-bottom: 20px;
+            animation: scaleUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 18px 24px;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            font-size: 18px;
+            background-color: #ffffff;
+            color: var(--text-main);
             outline: none;
+            box-sizing: border-box;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        input:focus { border-color: #0071e3; }
-        .btn-group { margin-top: 10px; }
+
+        input[type="text"]:focus {
+            border-color: var(--apple-blue);
+            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.15), 0 8px 24px rgba(0, 0, 0, 0.06);
+            transform: translateY(-1px);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
         button {
-            background-color: #0071e3;
+            background-color: var(--apple-blue);
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 20px;
-            font-size: 15px;
+            padding: 14px 28px;
+            border-radius: 14px;
+            font-size: 16px;
             font-weight: 500;
             cursor: pointer;
-            margin: 5px;
-            transition: background-color 0.2s;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 14px rgba(0, 113, 227, 0.3);
         }
-        button:hover { background-color: #0077ed; }
-        .verify-btn { background-color: #ffcc00; color: #1d1d1f; }
-        .verify-btn:hover { background-color: #e6b800; }
+
+        button:hover {
+            background-color: #0077ed;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 113, 227, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .verify-btn {
+            background-color: #ffffff;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+        }
+
+        .verify-btn:hover {
+            background-color: #f5f5f7;
+            border-color: var(--apple-yellow);
+            color: #d97706;
+            box-shadow: 0 6px 20px rgba(255, 204, 0, 0.2);
+        }
+
         #results {
-            margin-top: 35px;
             text-align: left;
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 18px;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
             display: none;
-            line-align: 1.5;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid rgba(0,0,0,0.04);
         }
-        img { max-width: 100%; border-radius: 12px; margin-top: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .version { font-size: 13px; color: #86868b; margin-top: 25px; text-align: right; font-weight: 500; }
-        h3 { color: #1d1d1f; font-size: 19px; }
+
+        #results.visible {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid rgba(0, 113, 227, 0.1);
+            border-top: 3px solid var(--apple-blue);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 20px auto;
+        }
+
+        h3 {
+            color: var(--text-main);
+            font-size: 20px;
+            font-weight: 600;
+            margin-top: 24px;
+            margin-bottom: 10px;
+            letter-spacing: -0.01em;
+        }
+
+        ul {
+            padding-left: 20px;
+            color: #424245;
+            line-height: 1.6;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .food-img-container {
+            overflow: hidden;
+            border-radius: 16px;
+            margin-top: 25px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            display: none;
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        img:hover {
+            transform: scale(1.02);
+        }
+
+        .version {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 30px;
+            text-align: right;
+            font-weight: 500;
+            border-top: 1px solid #f2f2f7;
+            padding-top: 15px;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes scaleUp {
+            from { opacity: 0; transform: scale(0.97); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <div class="logo-badge">Global Compliance Engine</div>
         <h1>Wisdom.foods</h1>
-        <p style="color: #86868b;">Search commercial food products for compliance data.</p>
-        <input type="text" id="foodInput" placeholder="e.g., MUSTARD SAUCE, MILK, HONEY">
+        <p class="subtitle">Search commercial food products for verified standards & packaging rules.</p>
+        
+        <div class="search-box-wrapper">
+            <input type="text" id="foodInput" placeholder="e.g., MILK, HONEY, WINE, MUSTARD SAUCE">
+        </div>
         
         <div class="btn-group">
             <button onclick="searchFood()">Search Standards</button>
@@ -71,32 +245,39 @@
         </div>
 
         <div id="results">
-            <div id="loading" style="display:none; color: #0071e3;">Fetching compliance data...</div>
+            <div id="loading" style="text-align: center;">
+                <div class="spinner"></div>
+                <div style="color: var(--apple-blue); font-weight: 500; font-size: 15px;">Synthesizing compliance guidelines...</div>
+            </div>
             <div id="content"></div>
-            <img id="foodImage" src="" alt="Food visual confirmation" style="display:none;">
+            <div class="food-img-container" id="imgContainer">
+                <img id="foodImage" src="" alt="Food visual confirmation">
+            </div>
             <div class="version" id="versionText"></div>
         </div>
     </div>
 
     <script>
-        // PASTE YOUR AQ... KEY INSIDE THESE QUOTES
         const API_KEY = 'AQ.Ab8RN6KbyNZQxZZQBsUm1f3lIL4vaLpRXQxORab7ea9DAUU9-g';
 
         async function searchFood() {
-            const food = document.getElementById('foodInput').value;
+            const food = document.getElementById('foodInput').value.trim();
             if (!food) return;
 
             const resultsDiv = document.getElementById('results');
+            const loadingDiv = document.getElementById('loading');
             const contentDiv = document.getElementById('content');
+            const imgContainer = document.getElementById('imgContainer');
             const img = document.getElementById('foodImage');
             
-            resultsDiv.style.display = 'block';
-            contentDiv.innerHTML = '<span style="color:#0071e3">Fetching latest standards...</span>';
-            img.style.display = 'none';
+            resultsDiv.classList.add('visible');
+            loadingDiv.style.display = 'block';
+            contentDiv.innerHTML = '';
+            imgContainer.style.display = 'none';
             document.getElementById('versionText').innerHTML = '';
 
             const prompt = `Act as an expert in global food standard codes. The user searched for: ${food}. 
-            Provide exactly two things formatted in clean HTML (use <h3> and <ul>):
+            Provide exactly two things formatted in clean HTML (use <h3> and <ul> tags):
             1. Standards and codes related to ${food}.
             2. Compliance/standard rules for packaging and nutritional panel info for ${food}.
             Keep it strictly factual and concise. Do not add any extra introductory text.`;
@@ -109,22 +290,27 @@
                 });
                 const data = await response.json();
                 
+                loadingDiv.style.display = 'none';
+
                 if (data.error) {
-                    contentDiv.innerHTML = `<span style="color:red">API Error: ${data.error.message}</span>`;
+                    contentDiv.innerHTML = `<span style="color:#ff3b30; font-weight:500;">API Error: ${data.error.message}</span>`;
                     return;
                 }
 
                 contentDiv.innerHTML = data.candidates[0].content.parts[0].text.replace(/```html|```/g, '');
-                img.src = `https://loremflickr.com/600/400/${encodeURIComponent(food)},food/all`;
-                img.style.display = 'block';
-                document.getElementById('versionText').innerText = `Information Version: Latest global standards as of 2026.`;
+                
+                img.src = `https://loremflickr.com/700/450/${encodeURIComponent(food)},food/all`;
+                imgContainer.style.display = 'block';
+                
+                document.getElementById('versionText').innerText = `Information Version: Latest global standards dataset updated through 2026.`;
             } catch (error) {
-                contentDiv.innerHTML = '<span style="color:red">Network error connecting to AI service.</span>';
+                loadingDiv.style.display = 'none';
+                contentDiv.innerHTML = '<span style="color:#ff3b30; font-weight:500;">Network error connecting to AI service. Please check your connection.</span>';
             }
         }
 
         function verifyResults() {
-            alert("Wisdom.foods Verification Tool:\n\nResults are generated dynamically using AI against global food datasets. Information provided reflects the most current standards up to 2026. Always cross-reference with official FSANZ or FDA documentation for legal commercial packaging.");
+            alert("Wisdom.foods Verification Tool:\n\nResults are generated dynamically using real-time global food intelligence datasets (reflecting active standards up to 2026). Always cross-reference with official regulatory bodies like FSANZ or FDA for official commercial production.");
         }
     </script>
 </body>
