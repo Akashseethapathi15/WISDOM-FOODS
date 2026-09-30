@@ -3,150 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wisdom.foods</title>
+    <title>Wisdom.foods | FSANZ</title>
     <style>
         :root {
-            --apple-orange: #ff9500;
-            --apple-yellow: #ffcc00;
-            --apple-blue: #0071e3;
-            --apple-bg: #fbfbfd;
-            --card-bg: #ffffff;
-            --text-main: #1d1d1f;
-            --text-secondary: #86868b;
-            --border-color: #d2d2d7;
+            --apple-blue: #0A84FF;
+            --apple-blue-hover: #0070DF;
+            --glass-bg: rgba(20, 20, 25, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --text-main: #F5F5F7;
+            --text-secondary: #86868B;
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
-            background-color: var(--apple-bg);
-            color: var(--text-main);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
             margin: 0;
-            padding: 60px 20px;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-main);
+            overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
+        /* Interactive Flowing Background */
+        .bg-layer {
+            position: fixed;
+            top: -5%;
+            left: -5%;
+            width: 110%;
+            height: 110%;
+            /* High-Res New Zealand Milford Sound Landscape */
+            background: url('https://images.unsplash.com/photo-1469521669194-babbdf900921?q=80&w=2500&auto=format&fit=crop') no-repeat center center;
+            background-size: cover;
+            z-index: -1;
+            transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
         .container {
-            max-width: 680px;
-            width: 100%;
+            width: 90%;
+            max-width: 720px;
+            margin: 60px 20px;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Apple Pro Frosted Glass Effect */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
+            padding: 50px 40px;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
             text-align: center;
-            animation: fadeInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         .logo-badge {
             display: inline-block;
-            background: linear-gradient(135deg, var(--apple-orange), var(--apple-yellow));
-            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #E8E8ED;
             font-size: 12px;
-            font-weight: 700;
-            padding: 4px 12px;
+            font-weight: 600;
+            padding: 6px 14px;
             border-radius: 20px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
-            box-shadow: 0 4px 12px rgba(255, 149, 0, 0.25);
+            letter-spacing: 1.5px;
+            margin-bottom: 15px;
         }
 
         h1 {
-            font-size: 42px;
+            font-size: 46px;
             font-weight: 700;
-            letter-spacing: -0.015em;
-            margin: 0 0 8px 0;
-            color: var(--text-main);
+            letter-spacing: -0.02em;
+            margin: 0 0 12px 0;
+            background: linear-gradient(180deg, #FFFFFF 0%, #A1A1A6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         p.subtitle {
-            font-size: 19px;
+            font-size: 18px;
             color: var(--text-secondary);
             font-weight: 400;
-            margin-bottom: 30px;
-        }
-
-        .search-box-wrapper {
-            position: relative;
-            width: 100%;
-            margin-bottom: 20px;
-            animation: scaleUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            margin-bottom: 35px;
+            line-height: 1.4;
         }
 
         input[type="text"] {
             width: 100%;
             padding: 18px 24px;
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 18px;
             font-size: 18px;
-            background-color: #ffffff;
-            color: var(--text-main);
+            background-color: rgba(0, 0, 0, 0.3);
+            color: #FFFFFF;
             outline: none;
             box-sizing: border-box;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]::placeholder {
+            color: rgba(255, 255, 255, 0.4);
         }
 
         input[type="text"]:focus {
             border-color: var(--apple-blue);
-            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.15), 0 8px 24px rgba(0, 0, 0, 0.06);
-            transform: translateY(-1px);
+            background-color: rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.25);
         }
 
         .btn-group {
             display: flex;
-            gap: 12px;
+            gap: 15px;
             justify-content: center;
-            margin-bottom: 40px;
+            margin-top: 20px;
+            margin-bottom: 30px;
         }
 
         button {
             background-color: var(--apple-blue);
             color: white;
             border: none;
-            padding: 14px 28px;
-            border-radius: 14px;
-            font-size: 16px;
-            font-weight: 500;
+            padding: 16px 32px;
+            border-radius: 16px;
+            font-size: 17px;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 4px 14px rgba(0, 113, 227, 0.3);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
         }
 
         button:hover {
-            background-color: #0077ed;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 113, 227, 0.4);
+            background-color: var(--apple-blue-hover);
+            transform: scale(1.02);
+            box-shadow: 0 8px 24px rgba(10, 132, 255, 0.4);
         }
 
-        button:active {
-            transform: translateY(0);
-        }
+        button:active { transform: scale(0.98); }
 
         .verify-btn {
-            background-color: #ffffff;
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .verify-btn:hover {
-            background-color: #f5f5f7;
-            border-color: var(--apple-yellow);
-            color: #d97706;
-            box-shadow: 0 6px 20px rgba(255, 204, 0, 0.2);
+            background-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 24px rgba(255, 255, 255, 0.1);
         }
 
         #results {
             text-align: left;
-            background: var(--card-bg);
-            padding: 40px;
-            border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+            background: rgba(0, 0, 0, 0.4);
+            padding: 35px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
             display: none;
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            border: 1px solid rgba(0,0,0,0.04);
+            transform: translateY(15px);
+            transition: all 0.5s ease;
         }
 
         #results.visible {
@@ -155,109 +172,105 @@
             transform: translateY(0);
         }
 
+        h3 {
+            color: #FFFFFF;
+            font-size: 21px;
+            font-weight: 600;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            letter-spacing: -0.01em;
+        }
+
+        ul {
+            padding-left: 20px;
+            color: #D2D2D7;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        li { margin-bottom: 10px; }
+
         .spinner {
-            width: 32px;
-            height: 32px;
-            border: 3px solid rgba(0, 113, 227, 0.1);
+            width: 34px;
+            height: 34px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
             border-top: 3px solid var(--apple-blue);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
             margin: 20px auto;
         }
 
-        h3 {
-            color: var(--text-main);
-            font-size: 20px;
-            font-weight: 600;
-            margin-top: 24px;
-            margin-bottom: 10px;
-            letter-spacing: -0.01em;
-        }
-
-        ul {
-            padding-left: 20px;
-            color: #424245;
-            line-height: 1.6;
-        }
-
-        li {
-            margin-bottom: 8px;
-        }
-
         .food-img-container {
             overflow: hidden;
-            border-radius: 16px;
-            margin-top: 25px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            border-radius: 14px;
+            margin-top: 30px;
             display: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         img {
             width: 100%;
             height: auto;
             display: block;
-            transition: transform 0.5s ease;
-        }
-
-        img:hover {
-            transform: scale(1.02);
         }
 
         .version {
             font-size: 12px;
             color: var(--text-secondary);
-            margin-top: 30px;
+            margin-top: 25px;
             text-align: right;
-            font-weight: 500;
-            border-top: 1px solid #f2f2f7;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
             padding-top: 15px;
         }
 
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        @keyframes scaleUp {
-            from { opacity: 0; transform: scale(0.97); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="logo-badge">Global Compliance Engine</div>
-        <h1>Wisdom.foods</h1>
-        <p class="subtitle">Search commercial food products for verified standards & packaging rules.</p>
-        
-        <div class="search-box-wrapper">
-            <input type="text" id="foodInput" placeholder="e.g., MILK, HONEY, WINE, MUSTARD SAUCE">
-        </div>
-        
-        <div class="btn-group">
-            <button onclick="searchFood()">Search Standards</button>
-            <button class="verify-btn" onclick="verifyResults()">Verify Source Legitimacy</button>
-        </div>
 
-        <div id="results">
-            <div id="loading" style="text-align: center;">
-                <div class="spinner"></div>
-                <div style="color: var(--apple-blue); font-weight: 500; font-size: 15px;">Synthesizing compliance guidelines...</div>
+    <div class="bg-layer" id="bgLayer"></div>
+
+    <div class="container">
+        <div class="glass-panel">
+            <div class="logo-badge">Oceania Compliance Hub</div>
+            <h1>Wisdom.foods</h1>
+            <p class="subtitle">Exclusive FSANZ Standards & New Zealand Packaging Rules.</p>
+            
+            <input type="text" id="foodInput" placeholder="e.g., MANUKA HONEY, MILK, MUSTARD">
+            
+            <div class="btn-group">
+                <button onclick="searchFood()">Retrieve FSANZ Rules</button>
+                <button class="verify-btn" onclick="verifyResults()">Verify Source</button>
             </div>
-            <div id="content"></div>
-            <div class="food-img-container" id="imgContainer">
-                <img id="foodImage" src="" alt="Food visual confirmation">
+
+            <div id="results">
+                <div id="loading" style="text-align: center;">
+                    <div class="spinner"></div>
+                    <div style="color: #86868B; font-weight: 500; font-size: 15px; margin-top: 10px;">Querying FSANZ Code...</div>
+                </div>
+                <div id="content"></div>
+                <div class="food-img-container" id="imgContainer">
+                    <img id="foodImage" src="" alt="Food confirmation">
+                </div>
+                <div class="version" id="versionText"></div>
             </div>
-            <div class="version" id="versionText"></div>
         </div>
     </div>
 
     <script>
+        // Interactive Mouse Flow for Background
+        document.addEventListener('mousemove', (e) => {
+            const bg = document.getElementById('bgLayer');
+            const moveX = (e.clientX / window.innerWidth - 0.5) * 20; 
+            const moveY = (e.clientY / window.innerHeight - 0.5) * 20;
+            bg.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.05)`;
+        });
+
         async function searchFood() {
             const food = document.getElementById('foodInput').value.trim();
             if (!food) return;
@@ -274,11 +287,12 @@
             imgContainer.style.display = 'none';
             document.getElementById('versionText').innerHTML = '';
 
-            const prompt = `Act as an expert in global food standard codes. The user searched for: ${food}. 
-            Provide exactly two things formatted in clean HTML (use <h3> and <ul> tags):
-            1. Standards and codes related to ${food}.
-            2. Compliance/standard rules for packaging and nutritional panel info for ${food}.
-            Keep it strictly factual and concise. Do not add any extra introductory text.`;
+            // Strictly FSANZ & Oceania Prompt
+            const prompt = `Act as a legal expert in FSANZ (Food Standards Australia New Zealand). The user searched for: ${food}. 
+            DO NOT include worldwide standards like FDA or EFSA. Provide exactly two things formatted in clean HTML (use <h3> and <ul> tags):
+            1. Exact FSANZ Standards and codes governing ${food}.
+            2. Oceania (NZ/AUS) packaging compliance and nutritional panel rules strictly for ${food}.
+            Keep it highly factual, Oceania-focused, and concise. Do not add conversational filler.`;
 
             try {
                 const response = await fetch('https://text.pollinations.ai/', {
@@ -298,15 +312,15 @@
                 img.src = `https://loremflickr.com/700/450/${encodeURIComponent(food)},food/all`;
                 imgContainer.style.display = 'block';
                 
-                document.getElementById('versionText').innerText = `Information Version: Latest global standards dataset updated through 2026.`;
+                document.getElementById('versionText').innerText = `Data reflects active FSANZ Code (Australia/New Zealand).`;
             } catch (error) {
                 loadingDiv.style.display = 'none';
-                contentDiv.innerHTML = '<span style="color:#ff3b30; font-weight:500;">Network error connecting to AI service. Please check your connection.</span>';
+                contentDiv.innerHTML = '<span style="color:#FF453A; font-weight:500;">Connection failed. Check network status.</span>';
             }
         }
 
         function verifyResults() {
-            alert("Wisdom.foods Verification Tool:\n\nResults are generated dynamically using real-time global food intelligence datasets (reflecting active standards up to 2026). Always cross-reference with official regulatory bodies like FSANZ or FDA for official commercial production.");
+            alert("Wisdom.foods FSANZ Tool:\n\nInformation is dynamically sourced against Food Standards Australia New Zealand (FSANZ) regulations. For finalized commercial packaging in New Zealand or Australia, always cross-check with the official Food Standards Code register.");
         }
     </script>
 </body>
