@@ -293,20 +293,36 @@
             2. Oceania (NZ/AUS) packaging compliance and nutritional panel rules strictly for ${food}.
             Keep it highly factual, Oceania-focused, and concise. Do not add conversational filler.`;
 
-            try {
-                const response = await fetch('https://text.pollinations.ai/openai', {
+       try {
+                // We are going back to the root URL that successfully connected for you before
+                const response = await fetch('https://text.pollinations.ai/', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         messages: [{ role: 'user', content: prompt }],
-                        model: 'gpt-4o',
-                        stream: false
+                        model: 'openai' // Forces the standard model
                     })
                 });
                 
-                const data = await response.json();
-                let cleanHTML = data.choices[0].message.content;
+                // Read whatever the server sends back as raw text first so it doesn't crash
+                const rawText = await response.text();
+                let cleanHTML = rawText;
                 
+                // Smart Filter: Safely extract the clean text if the server wraps it in JSON code
+                try {
+                    const parsedData = JSON.parse(rawText);
+                    if (parsedData.content) {
+                        cleanHTML = parsedData.content;
+                    } else if (parsedData.choices && parsedData.choices[0].message) {
+                        cleanHTML = parsedData.choices[0].message.content;
+                    } else if (Array.isArray(parsedData) && parsedData[0].message) {
+                        cleanHTML = parsedData[0].message.content;
+                    }
+                } catch (e) {
+                    // If it's not JSON and just plain text, it ignores this and moves on perfectly
+                }
+                
+                // Strip out any markdown tags the AI tries to add
                 cleanHTML = cleanHTML.replace(/```html/gi, '').replace(/```/g, '').trim();
                 
                 loadingDiv.style.display = 'none';
@@ -318,9 +334,8 @@
                 document.getElementById('versionText').innerText = `Data reflects active FSANZ Code (Australia/New Zealand).`;
             } catch (error) {
                 loadingDiv.style.display = 'none';
-                contentDiv.innerHTML = '<span style="color:#FF453A; font-weight:500;">Connection failed. Please try again.</span>';
+                contentDiv.innerHTML = '<span style="color:#FF453A; font-weight:500;">Connection failed. Please check your network and try again.</span>';
             }
-        } // THIS BRACKET WAS MISSING!
 
         function verifyResults() {
             alert("Wisdom.foods FSANZ Tool:\n\nInformation is dynamically sourced against Food Standards Australia New Zealand (FSANZ) regulations. For finalized commercial packaging in New Zealand or Australia, always cross-check with the official Food Standards Code register.");
