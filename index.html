@@ -294,20 +294,17 @@
             2. Oceania (NZ/AUS) packaging compliance and nutritional panel rules strictly for ${food}.
             Keep it highly factual, Oceania-focused, and concise. Do not add conversational filler.`;
 
-            try {
-                const response = await fetch('https://text.pollinations.ai/', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        messages: [{ role: 'user', content: prompt }],
-                        model: 'openai'
-                    })
-                });
+           try {
+                // Force a simpler request that only returns the final text, no raw JSON or reasoning logs
+                const response = await fetch(`https://text.pollinations.ai/${encodeURIComponent(prompt)}?model=gpt-4o`);
                 
-                const textData = await response.text();
+                let textData = await response.text();
+                
+                // Clean up any stray markdown formatting the AI might try to add
+                textData = textData.replace(/```html/gi, '').replace(/```/g, '').trim();
                 
                 loadingDiv.style.display = 'none';
-                contentDiv.innerHTML = textData.replace(/```html|```/g, '');
+                contentDiv.innerHTML = textData;
                 
                 img.src = `https://loremflickr.com/700/450/${encodeURIComponent(food)},food/all`;
                 imgContainer.style.display = 'block';
@@ -317,7 +314,6 @@
                 loadingDiv.style.display = 'none';
                 contentDiv.innerHTML = '<span style="color:#FF453A; font-weight:500;">Connection failed. Check network status.</span>';
             }
-        }
 
         function verifyResults() {
             alert("Wisdom.foods FSANZ Tool:\n\nInformation is dynamically sourced against Food Standards Australia New Zealand (FSANZ) regulations. For finalized commercial packaging in New Zealand or Australia, always cross-check with the official Food Standards Code register.");
