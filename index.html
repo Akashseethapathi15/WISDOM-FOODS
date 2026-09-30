@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #ffffff; /* Apple White */
+            background-color: #ffffff;
             color: #1d1d1f;
             display: flex;
             flex-direction: column;
@@ -15,7 +15,7 @@
             padding: 50px 20px;
             margin: 0;
         }
-        h1 { color: #f56900; /* Subtle Orange Accent */ font-weight: 600; letter-spacing: -0.5px; }
+        h1 { color: #f56900; font-weight: 600; letter-spacing: -0.5px; }
         .container { max-width: 650px; width: 100%; text-align: center; }
         input {
             width: 85%;
@@ -30,7 +30,7 @@
         input:focus { border-color: #0071e3; }
         .btn-group { margin-top: 10px; }
         button {
-            background-color: #0071e3; /* Apple Blue */
+            background-color: #0071e3;
             color: white;
             border: none;
             padding: 12px 24px;
@@ -42,7 +42,7 @@
             transition: background-color 0.2s;
         }
         button:hover { background-color: #0077ed; }
-        .verify-btn { background-color: #ffcc00; color: #1d1d1f; /* Warning Yellow */ }
+        .verify-btn { background-color: #ffcc00; color: #1d1d1f; }
         .verify-btn:hover { background-color: #e6b800; }
         #results {
             margin-top: 35px;
@@ -61,7 +61,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>WISDOM-FOODS</h1>
+        <h1>Wisdom.foods</h1>
         <p style="color: #86868b;">Search commercial food products for compliance data.</p>
         <input type="text" id="foodInput" placeholder="e.g., MUSTARD SAUCE, MILK, HONEY">
         
@@ -79,8 +79,8 @@
     </div>
 
     <script>
-        // PASTE YOUR API KEY BETWEEN THE QUOTES BELOW
-        const API_KEY = 'Ab8RN6KbyNZQxZZQBsUm1f3lIL4vaLpRXQxORab7ea9DAUU9-g';
+        // PASTE YOUR FULL KEY FROM THE SCREENSHOT BELOW
+        const API_KEY = 'AQ.Ab8RN6L_g1c-T_rFhi0HL6WQXFI-4N5guyEFIEZ5VVlhgV22A';
 
         async function searchFood() {
             const food = document.getElementById('foodInput').value;
@@ -109,22 +109,22 @@
                 });
                 const data = await response.json();
                 
-                // 1 & 2: Output Standards and Packaging Rules
-                contentDiv.innerHTML = data.candidates[0].content.parts[0].text.replace(/```html|```/g, '');
+                if (data.error) {
+                    contentDiv.innerHTML = `<span style="color:red">API Error: ${data.error.message}</span>`;
+                    return;
+                }
 
-                // 3: Output Image Confirmation 
+                contentDiv.innerHTML = data.candidates[0].content.parts[0].text.replace(/```html|```/g, '');
                 img.src = `https://loremflickr.com/600/400/${encodeURIComponent(food)},food/all`;
                 img.style.display = 'block';
-
-                // Append version year at the end
                 document.getElementById('versionText').innerText = `Information Version: Latest global standards as of 2026.`;
             } catch (error) {
-                contentDiv.innerHTML = '<span style="color:red">Error fetching data. Did you insert your API key?</span>';
+                contentDiv.innerHTML = '<span style="color:red">Network error connecting to AI service.</span>';
             }
         }
 
         function verifyResults() {
-            alert("Wisdom.foods Verification Tool:\n\nResults are generated dynamically using AI against global food datasets. Information provided reflects the most current standards up to 2026. Always cross-reference with official FSANZ (Food Standards Australia New Zealand) or FDA documentation for legal commercial packaging.");
+            alert("Wisdom.foods Verification Tool:\n\nResults are generated dynamically using AI against global food datasets. Information provided reflects the most current standards up to 2026. Always cross-reference with official FSANZ or FDA documentation for legal commercial packaging.");
         }
     </script>
 </body>
