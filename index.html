@@ -295,16 +295,36 @@
             Keep it highly factual, Oceania-focused, and concise. Do not add conversational filler.`;
 
            try {
-                // Force a simpler request that only returns the final text, no raw JSON or reasoning logs
-                const response = await fetch(`https://text.pollinations.ai/${encodeURIComponent(prompt)}?model=gpt-4o`);
+                // Safely send the data inside the body (not the URL)
+                const response = await fetch('https://text.pollinations.ai/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        messages: [{ role: 'user', content: prompt }],
+                        model: 'openai'
+                    })
+                });
                 
-                let textData = await response.text();
+                let rawData = await response.text();
+                let cleanHTML = rawData;
+
+                // Safely filter out the AI's "reasoning" JSON code if it tries to send it
+                try {
+                    const jsonData = JSON.parse(rawData);
+                    if (jsonData.content) {
+                        cleanHTML = jsonData.content; // Grab just the final answer
+                    } else if (jsonData.choices && jsonData.choices[0].message) {
+                        cleanHTML = jsonData.choices[0].message.content;
+                    }
+                } catch (e) {
+                    // If it's already pure text, do nothing
+                }
                 
-                // Clean up any stray markdown formatting the AI might try to add
-                textData = textData.replace(/```html/gi, '').replace(/```/g, '').trim();
+                // Final clean-up to remove stray markdown formatting
+                cleanHTML = cleanHTML.replace(/```html/gi, '').replace(/```/g, '').trim();
                 
                 loadingDiv.style.display = 'none';
-                contentDiv.innerHTML = textData;
+                contentDiv.innerHTML = cleanHTML;
                 
                 img.src = `https://loremflickr.com/700/450/${encodeURIComponent(food)},food/all`;
                 imgContainer.style.display = 'block';
@@ -312,7 +332,7 @@
                 document.getElementById('versionText').innerText = `Data reflects active FSANZ Code (Australia/New Zealand).`;
             } catch (error) {
                 loadingDiv.style.display = 'none';
-                contentDiv.innerHTML = '<span style="color:#FF453A; font-weight:500;">Connection failed. Check network status.</span>';
+                contentDiv.innerHTML = '<span style="color:#FF453A; font-weight:500;">Connection failed. Please try again.</span>';
             }
 
         function verifyResults() {
